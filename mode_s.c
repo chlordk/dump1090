@@ -1139,6 +1139,7 @@ void decodeModesMessage(struct modesMessage *mm, unsigned char *msg) {
     if (mm->addr) {
         mm->country = icao24country(mm->addr, 1);
     }
+    mm->squawkDescription = mm->modeA ? squawkDescription(mm->modeA) : "";
 }
 //
 //=========================================================================
@@ -1240,7 +1241,7 @@ void displayModesMessage(struct modesMessage *mm) {
         printf("  Flight Status  : %s\n", fs_str[mm->fs]);
         printf("  DR             : %d\n", ((mm->msg[1] >> 3) & 0x1F));
         printf("  UM             : %d\n", (((mm->msg[1]  & 7) << 3) | (mm->msg[2] >> 5)));
-        printf("  Squawk         : %04x\n", mm->modeA);
+        printf("  Squawk         : %04x <%s>\n", mm->modeA, mm->squawkDescription);
         printf("  ICAO Address   : %06x (%s)\n", mm->addr, mm->country);
 
         if (mm->msgtype == 21) {
@@ -1337,14 +1338,14 @@ void displayModesMessage(struct modesMessage *mm) {
         } else if (mm->metype == 28) { // Extended Squitter Aircraft Status
             if (mm->mesub == 1) {
 				printf("    Emergency State: %s\n", es_str[(mm->msg[5] & 0xE0) >> 5]);
-				printf("    Squawk: %04x\n", mm->modeA);
+				printf("    Squawk: %04x <%s>\n", mm->modeA, mm->squawkDescription);
             } else {
                 printf("    Unrecognized ME subtype: %d subtype: %d\n", mm->metype, mm->mesub);
             }
 
         } else if (mm->metype == 23) { // Test Message
 			if (mm->mesub == 7) {
-				printf("    Squawk: %04x\n", mm->modeA);
+				printf("    Squawk: %04x <%s>\n", mm->modeA, mm->squawkDescription);
             } else {
                 printf("    Unrecognized ME subtype: %d subtype: %d\n", mm->metype, mm->mesub);
 			}

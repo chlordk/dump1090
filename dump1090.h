@@ -60,11 +60,13 @@
     #include "rtl-sdr.h"
     #include "anet.h"
     #include "icao24address.h"
+    #include "squawk.h"
 #else
     #include "winstubs.h" //Put everything Windows specific in here
     #include "rtl-sdr.h"
     #include "anet.h"
     #include "icao24address.h"
+    #include "squawk.h"
 #endif
 
 // ============================= #defines ===============================
@@ -418,6 +420,7 @@ struct modesMessage {
     int  unit; 
     int  bFlags;                // Flags related to fields in this structure
     char *country;              // Country of ICAO address
+    char *squawkDescription;	// Squawk code description
 };
 
 // ======================== function declarations =========================
