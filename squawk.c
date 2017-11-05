@@ -467,7 +467,7 @@ char *squawkDescription(unsigned int squawk) {
 		struct squawk_t key, *res;
 		key.oct_fr = squawk;
 		res = bsearch(&key, &squawk_codes_table, nr_of_squawk_codes_table, sizeof(struct squawk_t), compsquawk);
-		return res->description;
+		return res ? res->description : "not found";
 	}
 }
 
