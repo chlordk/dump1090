@@ -25,7 +25,9 @@ The main features are:
 Installation
 ---
 
-Type "make".
+Type
+	apt install librtlsdr-dev libusb-1.0-0-dev
+	make
 
 Normal usage
 ---
