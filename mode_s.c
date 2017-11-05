@@ -1135,6 +1135,10 @@ void decodeModesMessage(struct modesMessage *mm, unsigned char *msg) {
         } else {
         }
     }
+
+    if (mm->addr) {
+        mm->country = icao24country(mm->addr, 1);
+    }
 }
 //
 //=========================================================================
@@ -1183,7 +1187,7 @@ void displayModesMessage(struct modesMessage *mm) {
         printf("  SL             : %d\n", ((mm->msg[1] & 0xE0) >> 5));
         printf("  Altitude       : %d %s\n", mm->altitude,
             (mm->unit == MODES_UNIT_METERS) ? "meters" : "feet");
-        printf("  ICAO Address   : %06x\n", mm->addr);
+        printf("  ICAO Address   : %06x (%s)\n", mm->addr, mm->country);
 
     } else if (mm->msgtype == 4 || mm->msgtype == 20) {
         printf("DF %d: %s, Altitude Reply.\n", mm->msgtype,
@@ -1193,7 +1197,7 @@ void displayModesMessage(struct modesMessage *mm) {
         printf("  UM             : %d\n", (((mm->msg[1]  & 7) << 3) | (mm->msg[2] >> 5)));
         printf("  Altitude       : %d %s\n", mm->altitude,
             (mm->unit == MODES_UNIT_METERS) ? "meters" : "feet");
-        printf("  ICAO Address   : %06x\n", mm->addr);
+        printf("  ICAO Address   : %06x (%s)\n", mm->addr, mm->country);
 
         if (mm->msgtype == 20) {
             printf("  Comm-B BDS     : %x\n", mm->msg[4]);
@@ -1227,7 +1231,7 @@ void displayModesMessage(struct modesMessage *mm) {
         printf("  DR             : %d\n", ((mm->msg[1] >> 3) & 0x1F));
         printf("  UM             : %d\n", (((mm->msg[1]  & 7) << 3) | (mm->msg[2] >> 5)));
         printf("  Squawk         : %04x\n", mm->modeA);
-        printf("  ICAO Address   : %06x\n", mm->addr);
+        printf("  ICAO Address   : %06x (%s)\n", mm->addr, mm->country);
 
         if (mm->msgtype == 21) {
             printf("  Comm-B BDS     : %x\n", mm->msg[4]);
@@ -1257,7 +1261,7 @@ void displayModesMessage(struct modesMessage *mm) {
     } else if (mm->msgtype == 11) { // DF 11
         printf("DF 11: All Call Reply.\n");
         printf("  Capability  : %d (%s)\n", mm->ca, ca_str[mm->ca]);
-        printf("  ICAO Address: %06x\n", mm->addr);
+        printf("  ICAO Address: %06x (%s)\n", mm->addr, mm->country);
         if (mm->iid > 16)
             {printf("  IID         : SI-%02d\n", mm->iid-16);}
         else
@@ -1270,12 +1274,12 @@ void displayModesMessage(struct modesMessage *mm) {
         printf("  SL             : %d\n", ((mm->msg[1] & 0xE0) >> 5));
         printf("  Altitude       : %d %s\n", mm->altitude,
             (mm->unit == MODES_UNIT_METERS) ? "meters" : "feet");
-        printf("  ICAO Address   : %06x\n", mm->addr);
+        printf("  ICAO Address   : %06x (%s)\n", mm->addr, mm->country);
 
     } else if (mm->msgtype == 17) { // DF 17
         printf("DF 17: ADS-B message.\n");
         printf("  Capability     : %d (%s)\n", mm->ca, ca_str[mm->ca]);
-        printf("  ICAO Address   : %06x\n", mm->addr);
+        printf("  ICAO Address   : %06x (%s)\n", mm->addr, mm->country);
         printf("  Extended Squitter  Type: %d\n", mm->metype);
         printf("  Extended Squitter  Sub : %d\n", mm->mesub);
         printf("  Extended Squitter  Name: %s\n", getMEDescription(mm->metype, mm->mesub));
@@ -1345,7 +1349,7 @@ void displayModesMessage(struct modesMessage *mm) {
             if (mm->ca == 1) {
                 printf("  Other Address : %06x\n", mm->addr);
             } else {
-                printf("  ICAO Address  : %06x\n", mm->addr);
+                printf("  ICAO Address  : %06x (%s)\n", mm->addr, mm->country);
             }
             printf("  Extended Squitter  Type: %d\n", mm->metype);
             printf("  Extended Squitter  Sub : %d\n", mm->mesub);

@@ -59,10 +59,12 @@
     #include <sys/ioctl.h>
     #include "rtl-sdr.h"
     #include "anet.h"
+    #include "icao24address.h"
 #else
     #include "winstubs.h" //Put everything Windows specific in here
     #include "rtl-sdr.h"
     #include "anet.h"
+    #include "icao24address.h"
 #endif
 
 // ============================= #defines ===============================
@@ -224,6 +226,7 @@ struct aircraft {
     uint64_t      even_cprtime;
     double        lat, lon;       // Coordinated obtained from CPR encoded data
     int           bFlags;         // Flags related to valid fields in this structure
+    char          *iso2;          // ISO 3166 two letter country code by ICAO address
     struct aircraft *next;        // Next aircraft in our linked list
 };
 
@@ -414,6 +417,7 @@ struct modesMessage {
     int  altitude;
     int  unit; 
     int  bFlags;                // Flags related to fields in this structure
+    char *country;              // Country of ICAO address
 };
 
 // ======================== function declarations =========================
