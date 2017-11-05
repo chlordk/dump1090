@@ -1167,7 +1167,17 @@ void displayModesMessage(struct modesMessage *mm) {
         printf("*");
 
     for (j = 0; j < mm->msgbits/8; j++) printf("%02x", mm->msg[j]);
-    printf(";\n");
+    printf(";");
+    if (1) {
+    	struct timeval tv;
+	struct tm *tm_info;
+	char buffer[32];
+	gettimeofday(&tv, NULL);
+	tm_info = localtime(&tv.tv_sec);
+	strftime(buffer, sizeof(buffer)-1, "%Y-%m-%d %H:%M:%S", tm_info);
+	printf("\t%llu\t%s", (unsigned long long)tv.tv_sec, buffer);
+    }
+    printf("\n");
 
     if (Modes.raw) {
         fflush(stdout); // Provide data to the reader ASAP
