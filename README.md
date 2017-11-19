@@ -187,6 +187,7 @@ away from me.
 If you are interested in a more serious antenna check the following
 resources:
 
+* http://jeroen.steeman.org/Antenna/collinear-dipole
 * http://gnuradio.org/redmine/attachments/download/246/06-foster-adsb.pdf
 * http://www.lll.lu/~edward/edward/adsb/antenna/ADSBantenna.html
 * http://modesbeast.com/pix/adsb-ant-drawing.gif
